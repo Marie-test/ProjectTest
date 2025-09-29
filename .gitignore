@@ -47,6 +47,17 @@ Thumbs.db
 allure-results/
 allure-report/
 
+# Allure Report generated files
+app.js
+data/
+export/
+favicon.ico
+history/
+index.html
+plugin/
+styles.css
+widgets/
+
 # PyCharm
 .idea/
 *.iws
