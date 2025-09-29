@@ -2,14 +2,9 @@ name: CI with Allure Reports
 
 on:
   push:
-    branches: [ main, fix/*, feature/* ]
+    branches: [ main ]
   pull_request:
     branches: [ main ]
-
-permissions:
-  contents: read
-  pages: write
-  id-token: write
 
 jobs:
   test:
@@ -36,14 +31,36 @@ jobs:
         export PYTHONPATH=$PYTHONPATH:$(pwd)
         pytest tests/ -v --alluredir=allure-results
 
-    - name: Setup Pages
+    - name: Install Allure CLI
+      run: |
+        sudo wget https://github.com/allure-framework/allure2/releases/download/2.27.0/allure-2.27.0.tgz
+        sudo tar -zxvf allure-2.27.0.tgz -C /opt/
+        sudo ln -s /opt/allure-2.27.0/bin/allure /usr/bin/allure
+
+    - name: Generate Allure report
+      run: |
+        allure generate allure-results -o allure-report --clean
+
+    - name: Upload Allure results artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: allure-results
+        path: allure-results
+        retention-days: 30
+
+    - name: Setup GitHub Pages
+      if: github.ref == 'refs/heads/main'
       uses: actions/configure-pages@v4
 
-    - name: Upload artifact
+    - name: Upload GitHub Pages artifact
+      if: github.ref == 'refs/heads/main'
       uses: actions/upload-pages-artifact@v3
       with:
-        path: allure-results
+        path: allure-report
 
     - name: Deploy to GitHub Pages
+      if: github.ref == 'refs/heads/main'
       id: deployment
       uses: actions/deploy-pages@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
