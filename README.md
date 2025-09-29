@@ -1,10 +1,12 @@
 # ProjectTest - API Testing Framework
 
-## 🏗️ Branch Structure
-main ← стабильная, рабочая версия тестов
-├── feature/* ← разработка новых тест-кейсов
-├── hotfix/* ← рабочие исправления
-└── gh-pages ← автоматические отчеты Allure
+# Структура проекта
+ProjectTest/
+├── tests/           # Тесты
+├── utils/           # Вспомогательные утилиты
+├── requirements.txt # Зависимости
+├── .github/workflows/ # CI/CD пайплайны
+└── README.md       # Документация
 
 text
 
